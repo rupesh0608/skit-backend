@@ -44,13 +44,7 @@ class SecurityConfiguration: WebSecurityConfigurerAdapter() {
                 .antMatchers("/swagger-ui/**",
                         "/v3/api-docs",
                         "/v3/api-docs/**",
-                        "/api/auth/user/forgot_password/otp/verify",
-                        "/api/auth/user/forgot_password",
-                        "/api/auth/user/facebook_login",
-                        "/api/auth/verify/user_account",
-                        "/api/auth/welcome",
-                        "/api/auth/user/login",
-                        "/api/auth/user/registration")
+                        "/api/app/auth/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

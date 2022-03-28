@@ -1,7 +1,7 @@
 package com.rdktechnologies.skit.error
 
 
-import com.rdktechnologies.skit.dto.response.SimpleResponse
+import com.rdktechnologies.skit.model.response.app.SimpleResponse
 import org.springframework.beans.TypeMismatchException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

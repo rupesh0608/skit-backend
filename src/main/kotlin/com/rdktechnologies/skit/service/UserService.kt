@@ -3,7 +3,6 @@ package com.rdktechnologies.skit.service
 import com.rdktechnologies.skit.entity.User
 import com.rdktechnologies.skit.error.exceptions.UserNotFoundException
 import com.rdktechnologies.skit.repository.UserRepository
-import com.rdktechnologies.skit.service.auth.AuthUserDetails
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -25,6 +24,5 @@ class UserService:UserDetailsService {
             throw UserNotFoundException("Invalid Credentials")
         }
     }
-
 
 }

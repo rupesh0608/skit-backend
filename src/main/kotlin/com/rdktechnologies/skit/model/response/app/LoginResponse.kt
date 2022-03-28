@@ -1,4 +1,6 @@
-package com.rdktechnologies.skit.dto.response
+package com.rdktechnologies.skit.model.response.app
+
+import com.rdktechnologies.skit.entity.User
 
 
 data class LoginResponse(
@@ -6,7 +8,7 @@ data class LoginResponse(
         var statusCode: Int? = null,
         var message: String? = null,
         var token: String? = null,
-        var data: LoginUserData? = null
+        var data: User? = null
 )
 
 data class LoginUserData(

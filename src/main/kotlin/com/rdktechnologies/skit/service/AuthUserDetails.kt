@@ -1,4 +1,4 @@
-package com.rdktechnologies.skit.service.auth
+package com.rdktechnologies.skit.service
 
 import com.rdktechnologies.skit.entity.Role
 import com.rdktechnologies.skit.entity.User

@@ -1,4 +1,4 @@
-package com.rdktechnologies.skit.dto.response
+package com.rdktechnologies.skit.model.response.app
 
 data class SimpleResponse (
     var error:Boolean?=null,

@@ -33,6 +33,7 @@ data class User(
         var isCredentialsNonExpired: Boolean? = null,
         var isNotificationEnabled: Boolean? = true,
         var isFacebookLogin: Boolean? = false,
+        var isGoogleLogin: Boolean? = false,
         @OneToOne(cascade = [CascadeType.ALL])
         var roles: Role? = null
 
