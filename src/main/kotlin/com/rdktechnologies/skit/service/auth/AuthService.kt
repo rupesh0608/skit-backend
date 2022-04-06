@@ -1,4 +1,4 @@
-package com.rdktechnologies.skit.service.app.auth
+package com.rdktechnologies.skit.service.auth
 
 
 import com.ongraph.daverick.recipie.social.app.constants.Permissions
@@ -7,6 +7,7 @@ import com.rdktechnologies.skit.model.response.app.SimpleResponse
 import com.rdktechnologies.skit.entity.*
 import com.rdktechnologies.skit.error.exceptions.*
 import com.rdktechnologies.skit.model.dto.app.*
+import com.rdktechnologies.skit.model.response.app.AdminLoginResponse
 import com.rdktechnologies.skit.model.response.app.LoginResponse
 import com.rdktechnologies.skit.model.response.app.LoginUserData
 import com.rdktechnologies.skit.repository.*
@@ -42,14 +43,19 @@ class AuthService : IAuthService {
     private lateinit var privilegeRepository: PrivilegeRepository
 
 
-    override fun signup(signupDto: SignupDto): ResponseEntity<Any> {
+    override fun signup(signupDto: SignupDto,type:String): ResponseEntity<Any> {
         if (userRepository.findByEmail(signupDto.email).isPresent) throw AlreadyExistException("The given email already exists.")
 
         val password = encodePassword(signupDto.password, signupDto.confirm_password)
 
         val privilege = createPrivilegeIfNotFound(name = Permissions.READ_PRIVILEGE)
-
-        val roles = createRoleIfNotFound(name = Roles.ROLE_USER, privileges = privilege)
+        lateinit var roles:Role
+        if(type == "user_signup"){
+           roles = createRoleIfNotFound(name = Roles.ROLE_USER, privileges = privilege)
+        }
+        if(type == "admin_signup"){
+            roles = createRoleIfNotFound(name = Roles.ROLE_ADMIN, privileges = privilege)
+        }
 
         val userObj = User(firstName = signupDto.first_name,
                 lastName = signupDto.last_name,
@@ -63,7 +69,7 @@ class AuthService : IAuthService {
         return ResponseEntity.ok(SimpleResponse(false, 200, "Account created Successfully."))
     }
 
-    override fun login(loginDto: LoginDto): ResponseEntity<Any> {
+    override fun login(loginDto: LoginDto,type:String): ResponseEntity<Any> {
         val authentication: Authentication = authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                         loginDto.email,
@@ -75,7 +81,14 @@ class AuthService : IAuthService {
         if (!authentication.isAuthenticated) throw UserNotFoundException("Invalid Credentials")
         val token = jwtUtility.generateToken(userDetails)
         val user = userDetails.users
-        return ResponseEntity.ok(LoginResponse(false, 200, "LoggedIn Successfully!!", token, user))
+        val roles=userDetails.users.roles
+        if(type=="admin_login" && roles?.name==Roles.ROLE_ADMIN){
+        return ResponseEntity.ok(AdminLoginResponse(false, 200, "LoggedIn Successfully!!", token,roles, user))
+        }else if(type=="user_login") {
+            return ResponseEntity.ok(LoginResponse(false, 200, "LoggedIn Successfully!!", token, user))
+        }else{
+            throw UserNotFoundException("Invalid Credentials")
+        }
     }
 
     override fun resetPassword(resetPasswordDto: ResetPasswordDto): ResponseEntity<Any> {
