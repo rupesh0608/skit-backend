@@ -1,1 +1,1 @@
-web: java -jar build/libs/skit-0.0.1-SNAPSHOT.jar
+web: java -jar -Dserver.port=$PORT build/libs/skit-0.0.1-SNAPSHOT.jar
